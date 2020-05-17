@@ -48,6 +48,7 @@ Warning: abusing this script may get your IP banned by Instagram.
 
 Copyright &copy; 2020 Felix Soubelet. [MIT License][license]
 
+[license]: https://github.com/fsoubelet/InstaSave/blob/master/LICENSE
 [loguru_url]: https://github.com/Delgan/loguru
 [requests_url]: https://github.com/psf/requests
 [tqdm_url]: https://github.com/tqdm/tqdm
