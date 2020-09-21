@@ -24,7 +24,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.6"
-loguru = "^0.4.1"
+loguru = ">=0.4.1,<0.6.0"
 tqdm = "^4.46.0"
 requests = "^2.23.0"
 
