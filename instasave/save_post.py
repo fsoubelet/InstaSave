@@ -182,33 +182,7 @@ def download_video(post_content: str = None) -> None:
     logger.success("Successfully downloaded video")
 
 
-def _parse_arguments():
-    """
-    Simple argument parser to get parameters from the command line.
-    """
-    parser = argparse.ArgumentParser(description="Downloading media from Instagram posts.")
-    parser.add_argument(
-        "-u",
-        "--url",
-        dest="url",
-        default=None,
-        type=str,
-        required=True,
-        help="Link to the Instagram post you want to download the content of.",
-    )
-    parser.add_argument(
-        "-l",
-        "--logs",
-        dest="log_level",
-        default="info",
-        type=str,
-        help="The base console logging level. Can be 'debug', 'info', 'warning' and 'error'. "
-        "Defaults to 'info'.",
-    )
-    return parser.parse_args()
-
-
-def _set_logger_level(log_level: str = "info") -> None:
+def set_logger_level(log_level: str = "info") -> None:
     """
     Sets the logger level to the one provided at the commandline.
     Default loguru handler will have DEBUG level and ID 0.
@@ -220,39 +194,3 @@ def _set_logger_level(log_level: str = "info") -> None:
     """
     logger.remove(0)
     logger.add(sys.stderr, level=log_level.upper())
-
-
-def main() -> None:
-    """
-    Parse for an url, handle the download.
-
-    Returns:
-        Nothing.
-    """
-    command_line_args = _parse_arguments()
-    _set_logger_level(command_line_args.log_level)
-    url: str = command_line_args.url
-
-    if not is_connected():
-        sys.exit()
-
-    if not is_instagram_domain(url):
-        logger.error("The entered test_url does not link to a valid Instagram post")
-        sys.exit()
-
-    media_content = requests.get(url).content.decode("utf-8")
-    media_type = determine_media_type(media_content)
-
-    if media_type == "image":
-        download_image(media_content)
-
-    elif media_type == "video":
-        download_video(media_content)
-
-    else:
-        logger.error("Media content type could not be identified as an image or a video")
-        sys.exit()
-
-
-if __name__ == "__main__":
-    main()

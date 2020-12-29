@@ -6,32 +6,34 @@ A simple script to download media from Instagram posts.
 
 ## Install
 
-This script runs on Python3.6+, and requires the following libraries: [`requests`][requests_url], [`tqdm`][tqdm_url] and [`loguru`][loguru_url].
-You can install this package from PyPI with:
+This script runs on Python3.6+.
+You can install it from PyPI with:
 ```bash
 pip install instasave
 ```
 
 ## Usage
 
-With this package is installed in the activated enrivonment, usage is:
+With this package installed in the activated enrivonment, it can be called through `python -m instasave` or through a newly created `instasave` command.
+
+Detailed usage goes as follows:
 ```bash
-python -m instasave --url link_to_instagram_post
-```
+Usage: instasave [OPTIONS] [URL]
 
-Detailed options go as follows:
-```bash
-usage: __main__.py [-h] -u URL [-l LOG_LEVEL]
+  Download media from Instagram posts.
 
-Downloading media from Instagram posts.
+Arguments:
+  [URL]  Link to the Instagram post you want to download the content of.
 
-optional arguments:
-  -h, --help            show this help message and exit
-  -u URL, --url URL     Link to the Instagram post you want to download the
-                        content of.
-  -l LOG_LEVEL, --logs LOG_LEVEL
-                        The base console logging level. Can be 'debug',
-                        'info', 'warning' and 'error'. Defaults to 'info'.
+Options:
+  --log-level TEXT      The base console logging level. Can be 'debug',
+                        'info', 'warning' and 'error'.  [default: info]
+
+  --install-completion  Install completion for the current shell.
+  --show-completion     Show completion for the current shell, to copy it or
+                        customize the installation.
+
+  --help                Show this message and exit.
 ```
 
 The downloaded files will be saved in the current directory under a name composed of the file type (image / video) appended by the download timestamp.
@@ -43,6 +45,7 @@ Warning: abusing this script may get your IP banned by Instagram.
 - [x] Implement proper logging.
 - [x] Make into a package.
 - [x] Make callable as a python module (`python -m instasave ...`).
+- [x] Improving the command line experience.
 
 ## License
 
