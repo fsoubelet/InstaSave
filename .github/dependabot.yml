@@ -1,0 +1,25 @@
+version: 2
+updates:
+- package-ecosystem: pip
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: loguru
+    versions:
+    - "> 0.4.1, < 1"
+  - dependency-name: urllib3
+    versions:
+    - 1.26.3
+    - 1.26.4
+  - dependency-name: tqdm
+    versions:
+    - 4.56.0
+    - 4.56.1
+    - 4.56.2
+    - 4.57.0
+    - 4.58.0
+    - 4.59.0
+    - 4.60.0
