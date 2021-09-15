@@ -47,9 +47,15 @@ Warning: abusing this script may get your IP banned by Instagram.
 - [x] Make callable as a python module (`python -m instasave ...`).
 - [x] Improving the command line experience.
 
-## License
+---
 
-Copyright &copy; 2020 Felix Soubelet. [MIT License][license]
+<div align="center">
+  <sub><strong>Made with ♥︎ by fsoubelet</strong></sub>
+  <br>
+  <sub><strong>MIT &copy 2020 Felix Soubelet</strong></sub>
+</div>
+
+
 
 [license]: https://github.com/fsoubelet/InstaSave/blob/master/LICENSE
 [loguru_url]: https://github.com/Delgan/loguru
