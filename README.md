@@ -6,7 +6,7 @@ A simple script to download media from Instagram posts.
 
 ## Install
 
-This script runs on Python3.6+.
+This script runs on `Python 3.7+`.
 You can install it from PyPI with:
 ```bash
 pip install instasave
