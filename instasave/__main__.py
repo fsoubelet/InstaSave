@@ -1,7 +1,7 @@
 """
 Running directly from python module.
 """
-
+import requests
 import typer
 
 from instasave.save_post import (

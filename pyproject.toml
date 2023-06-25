@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "instasave"
-version = "0.2.0"
+version = "0.3.0"
 description = "Download script for Instagram posts"
 authors = ["Felix Soubelet <felix.soubelet@liverpool.ac.uk>"]
 license = "MIT"
@@ -23,11 +23,11 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.7"
-loguru = "^0.4.1"
-tqdm = "^4.46.0"
-requests = "^2.23.0"
-typer = "^0.3.2"
+python = "^3.8"
+loguru = "^0.4"
+tqdm = "^4.46"
+requests = "^2.23"
+typer = "^0.3"
 
 [tool.poetry.dev-dependencies]
 typer-cli = "^0.0.11"
