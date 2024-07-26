@@ -53,3 +53,8 @@ dependencies = [
 [project.urls]
 homepage = "https://github.com/fsoubelet/InstaSave"
 repository = "https://github.com/fsoubelet/InstaSave"
+
+
+[tool.ruff]
+# Generate Python 3.9-compatible code.
+target-version = "py39"
