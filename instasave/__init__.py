@@ -13,7 +13,7 @@ instasave provides a simple script to download an image or video from an Instagr
 __title__ = "instasave"
 __description__ = "Download script for Instagram posts."
 __url__ = "https://github.com/fsoubelet/InstaSave"
-__version__ = "0.2.0"
+__version__ = "0.3.1"
 __author__ = "Felix Soubelet"
 __author_email__ = "felix.soubelet@liverpool.ac.uk"
 __license__ = "MIT"
