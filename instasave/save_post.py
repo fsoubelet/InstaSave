@@ -1,7 +1,9 @@
 """
 Simple script to download Instagram media content, because they don't normally let you
 """
-import argparse
+
+from __future__ import annotations
+
 import re
 import sys
 from datetime import datetime
@@ -28,18 +30,17 @@ def is_connected(test_url: str = "https://instagram.com", timeout: int = 2) -> b
     try:
         test_connection = requests.get(test_url, timeout=timeout)
         test_connection.raise_for_status()
-        logger.debug("Internet connection is valid")
-        return True
     except requests.HTTPError as error:
-        logger.exception(
-            f"Internet connection check failed with status code {error.response.status_code}"
-        )
+        logger.exception(f"Internet connection check failed with status code {error.response.status_code}")
     except requests.exceptions.ConnectionError:
         logger.exception("An error happened when trying to establish a connection to Instagram.")
+    else:
+        logger.debug("Internet connection is valid")
+        return True
     return False
 
 
-def is_instagram_domain(post_url: str = None) -> bool:
+def is_instagram_domain(post_url: str | None = None) -> bool:
     """
     Confirms whether the provided test_url is a valid instagram link to download from.
 
@@ -53,12 +54,11 @@ def is_instagram_domain(post_url: str = None) -> bool:
     if is_match:
         logger.debug("Provided test_url is a valid Instagram link")
         return True
-    else:
-        logger.debug("Provided test_url does not link to an Instagram post.")
-        return False
+    logger.debug("Provided test_url does not link to an Instagram post.")
+    return False
 
 
-def determine_media_type(media_content: str = None) -> str:
+def determine_media_type(media_content: str | None = None) -> str:
     """
     Determine the content type in the media_content from a request.
 
@@ -71,16 +71,14 @@ def determine_media_type(media_content: str = None) -> str:
         that would be invalid".
     """
     logger.debug("Searching for content header in downloaded html media content")
-    content_type_header: str = re.search(
-        r'<meta name="medium" content=[\'"]?([^\'" >]+)', media_content
-    ).group()
+    content_type_header: str = re.search(r'<meta name="medium" content=[\'"]?([^\'" >]+)', media_content).group()
     logger.debug("Determining content type")
     content_type = re.sub(r'<meta name="medium" content="', "", content_type_header)
     logger.debug(f"Identified content type: {content_type}")
     return content_type
 
 
-def extract_image_direct_link(media_content: str = None) -> str:
+def extract_image_direct_link(media_content: str | None = None) -> str:
     """
     Find the exact test_url to the image embedded in the page content.
 
@@ -91,15 +89,13 @@ def extract_image_direct_link(media_content: str = None) -> str:
         A string with the exact test_url to the image in the Instagram post.
     """
     logger.debug("Searching for image header in downloaded html media content")
-    image_link_header: str = re.search(
-        r'meta property="og:image" content=[\'"]?([^\'" >]+)', media_content
-    ).group()
+    image_link_header: str = re.search(r'meta property="og:image" content=[\'"]?([^\'" >]+)', media_content).group()
     logger.debug("Determining image's direct link")
     image_link: str = re.sub(r'meta property="og:image" content="', "", image_link_header)
     return image_link
 
 
-def extract_video_direct_link(media_content: str = None) -> str:
+def extract_video_direct_link(media_content: str | None = None) -> str:
     """
     Find the exact test_url to the video embedded in the page content.
 
@@ -110,16 +106,14 @@ def extract_video_direct_link(media_content: str = None) -> str:
         A string with the exact test_url to the video in the Instagram post.
     """
     logger.debug("Searching for video header in downloaded html media content")
-    image_link_header: str = re.search(
-        r'meta property="og:video" content=[\'"]?([^\'" >]+)', media_content
-    ).group()
+    image_link_header: str = re.search(r'meta property="og:video" content=[\'"]?([^\'" >]+)', media_content).group()
     logger.debug("Determining video's direct link")
     video_link: str = re.sub(r'meta property="og:video" content="', "", image_link_header)
     return video_link
 
 
 @logger.catch
-def download_image(post_content: str = None) -> None:
+def download_image(post_content: str | None = None) -> None:
     """
     Downloads the image from the post.
 
@@ -132,16 +126,14 @@ def download_image(post_content: str = None) -> None:
     image_direct_url: str = extract_image_direct_link(post_content)
 
     logger.debug("Extracting image content")
-    image_content = requests.get(image_direct_url, stream=True)
+    image_content = requests.get(image_direct_url, stream=True, timeout=10)
     image_size = int(image_content.headers["Content-Length"])
 
     logger.debug("Writing image file")
     image_file_path = Path(
-        f"image_download_{datetime.strftime(datetime.now(), '%Y-%m-%d-%H-%M-%S')}.jpg"
+        f"image_download_{datetime.strftime(datetime.now(tz=datetime.timezone.utc), '%Y-%m-%d-%H-%M-%S')}.jpg"
     )
-    progress_bar = tqdm(
-        total=image_size, unit="B", unit_scale=True, desc="Writing Process", ascii=False
-    )
+    progress_bar = tqdm(total=image_size, unit="B", unit_scale=True, desc="Writing Process", ascii=False)
     with image_file_path.open("wb") as image_file:
         for data_block in image_content.iter_content(BLOCK_SIZE):
             progress_bar.update(len(data_block))
@@ -151,7 +143,7 @@ def download_image(post_content: str = None) -> None:
 
 
 @logger.catch
-def download_video(post_content: str = None) -> None:
+def download_video(post_content: str | None = None) -> None:
     """
     Downloads the video from the post.
 
@@ -164,16 +156,14 @@ def download_video(post_content: str = None) -> None:
     video_direct_url: str = extract_video_direct_link(post_content)
 
     logger.info("Extracting video content")
-    video_content = requests.get(video_direct_url, stream=True)
+    video_content = requests.get(video_direct_url, stream=True, timeout=10)
     video_size = int(video_content.headers["Content-Length"])
 
     logger.debug("Writing video file")
     video_file_path = Path(
-        f"video_download_{datetime.strftime(datetime.now(), '%Y-%m-%d-%H-%M-%S')}.mp4"
+        f"video_download_{datetime.strftime(datetime.now(tz=datetime.timezone.utc), '%Y-%m-%d-%H-%M-%S')}.mp4"
     )
-    progress_bar = tqdm(
-        total=video_size, unit="B", unit_scale=True, desc="Writing Progress", ascii=False
-    )
+    progress_bar = tqdm(total=video_size, unit="B", unit_scale=True, desc="Writing Progress", ascii=False)
     with video_file_path.open("wb") as video_file:
         for data_block in video_content.iter_content(BLOCK_SIZE):
             progress_bar.update(len(data_block))

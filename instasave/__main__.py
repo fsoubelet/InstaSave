@@ -1,8 +1,10 @@
 """
 Running directly from python module.
 """
+
 import requests
 import typer
+from loguru import logger
 
 from instasave.save_post import (
     determine_media_type,
@@ -18,9 +20,7 @@ app = typer.Typer()
 
 @app.command()
 def save(
-    url: str = typer.Argument(
-        None, help="Link to the Instagram post you want to download the content of."
-    ),
+    url: str = typer.Argument(None, help="Link to the Instagram post you want to download the content of."),
     log_level: str = typer.Option(
         "info",
         help="The base console logging level. Can be 'debug', 'info', 'warning' and 'error'.",
@@ -36,7 +36,7 @@ def save(
         logger.error("The entered test_url does not link to a valid Instagram post")
         raise typer.Exit(code=1)
 
-    media_content = requests.get(url).content.decode("utf-8")
+    media_content = requests.get(url, timeout=10).content.decode("utf-8")
     media_type = determine_media_type(media_content)
 
     if media_type == "image":
